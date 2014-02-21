@@ -2,7 +2,7 @@
   "name": "bookshelf-authorization",
   "version": "0.0.0",
   "description": "An authorization library for use with Bookshelf.js",
-  "main": "bookshelf-authorization.js",
+  "main": "./lib/bookshelf-authorization.js",
   "scripts": {
     "test": "mocha"
   },
@@ -20,5 +20,14 @@
   "bugs": {
     "url": "https://github.com/valet-io/bookshelf-authorization/issues"
   },
-  "homepage": "https://github.com/valet-io/bookshelf-authorization"
+  "homepage": "https://github.com/valet-io/bookshelf-authorization",
+  "devDependencies": {
+    "bookshelf": "~0.6.4"
+  },
+  "peerDependencies": {
+    "bookshelf": ">=0.6.x"
+  },
+  "dependencies": {
+    "bluebird": "~1.0.5"
+  }
 }
