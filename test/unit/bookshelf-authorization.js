@@ -2,8 +2,8 @@ var expect                 = require('chai').expect;
 var _                      = require('lodash');
 var sinon                  = require('sinon');
 
-var bookshelf              = require('./mocks/bookshelf');
-var BookshelfAuthorization = require('../lib/bookshelf-authorization');
+var bookshelf              = require('../mocks/bookshelf');
+var BookshelfAuthorization = require('../../lib/bookshelf-authorization');
 
 describe('Bookshelf Authorization', function () {
   'use strict';

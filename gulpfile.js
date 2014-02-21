@@ -13,7 +13,7 @@ gulp.task('cover', function () {
 });
 
 gulp.task('test', ['cover'], function () {
-  return gulp.src('test/*.js')
+  return gulp.src(['test/unit/*.js', 'test/unit/integration/*.js'])
     .pipe(plugins.mocha())
     .pipe(plugins.istanbul.writeReports());
 });
