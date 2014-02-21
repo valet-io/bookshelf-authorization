@@ -22,7 +22,17 @@
   },
   "homepage": "https://github.com/valet-io/bookshelf-authorization",
   "devDependencies": {
-    "bookshelf": "~0.6.4"
+    "bookshelf": "~0.6.4",
+    "jshint-stylish": "~0.1.5",
+    "gulp-bump": "~0.1.5",
+    "gulp-git": "~0.3.2",
+    "gulp-load-plugins": "~0.3.0",
+    "gulp-mocha": "~0.4.1",
+    "gulp": "~3.5.2",
+    "gulp-jshint": "~1.4.2",
+    "gulp-istanbul": "~0.1.1",
+    "chai": "~1.9.0",
+    "lodash": "~2.4.1"
   },
   "peerDependencies": {
     "bookshelf": ">=0.6.x"
