@@ -1,1 +1,1 @@
-module.exports = require('bookshelf/dialects/base/model').ModelBase;
+module.exports = require('../../lib/model')(require('bookshelf/dialects/base/model').ModelBase);

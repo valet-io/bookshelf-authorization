@@ -34,13 +34,13 @@ describe('Bookshelf Authorization', function () {
     it('sets the UserBase on the Bookshelf instance', function () {
       expect(this.bookshelf)
         .to.have.property('User')
-        .and.itself.respondTo('extend');
+        .and.itself.respondTo('can');
     });
 
-    it('sets the ResourceBase on the Bookshelf instance', function () {
+    it('overwrites Bookshelf.Model', function () {
       expect(this.bookshelf)
-        .to.have.property('Resource')
-        .and.itself.respondTo('extend');
+        .to.have.property('Model')
+        .and.have.property('authorize');
     });
 
   });
@@ -52,16 +52,16 @@ describe('Bookshelf Authorization', function () {
       Bases = BookshelfAuthorization(this.bookshelf, this.bookshelf.Model);
     });
 
+    it('returns the ModelBase', function () {
+      expect(Bases)
+        .to.have.property('Model')
+        .and.have.property('authorize');
+    });
+
     it('returns the UserBase', function () {
       expect(Bases)
         .to.have.property('User')
-        .and.itself.respondTo('extend');
-    });
-
-    it('returns the ResourceBase', function () {
-      expect(Bases)
-        .to.have.property('Resource')
-        .and.itself.respondTo('extend');
+        .and.itself.respondTo('can');
     });
 
   });
