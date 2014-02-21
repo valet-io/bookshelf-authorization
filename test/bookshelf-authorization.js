@@ -1,5 +1,6 @@
 var expect                 = require('chai').expect;
 var _                      = require('lodash');
+var sinon                  = require('sinon');
 
 var bookshelf              = require('./mocks/bookshelf');
 var BookshelfAuthorization = require('../lib/bookshelf-authorization');
@@ -7,10 +8,27 @@ var BookshelfAuthorization = require('../lib/bookshelf-authorization');
 describe('Bookshelf Authorization', function () {
   'use strict';
 
+  beforeEach(function () {
+    this.bookshelf = _.clone(bookshelf);
+  });
+
+  it('loads the registry plugin', function () {
+    this.bookshelf.plugin(BookshelfAuthorization);
+    expect(this.bookshelf).to.itself.respondTo('model');
+  });
+
+  it('does not overwrite the registry plugin if already loaded', function () {
+    var registry = require('bookshelf/plugins/registry');
+    this.bookshelf.plugin(registry);
+    sinon.spy(this.bookshelf, 'plugin');
+    this.bookshelf.plugin(BookshelfAuthorization);
+    sinon.assert.neverCalledWith(this.bookshelf.plugin, registry);
+  });
+
   describe('Bookshelf plugin', function () {
 
     beforeEach(function () {
-      this.bookshelf = _.clone(bookshelf).plugin(BookshelfAuthorization);
+      this.bookshelf.plugin(BookshelfAuthorization);
     });
 
     it('sets the UserBase on the Bookshelf instance', function () {
@@ -31,7 +49,6 @@ describe('Bookshelf Authorization', function () {
 
     var Bases;
     beforeEach(function () {
-      this.bookshelf = _.clone(bookshelf);
       Bases = BookshelfAuthorization(this.bookshelf, this.bookshelf.Model);
     });
 

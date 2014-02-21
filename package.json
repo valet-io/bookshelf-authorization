@@ -32,7 +32,8 @@
     "gulp-jshint": "~1.4.2",
     "gulp-istanbul": "~0.1.1",
     "chai": "~1.9.0",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "sinon": "~1.8.2"
   },
   "peerDependencies": {
     "bookshelf": ">=0.6.x"
