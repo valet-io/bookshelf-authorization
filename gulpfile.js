@@ -32,5 +32,5 @@ gulp.task('test', ['cover'], function () {
 var watch;
 gulp.task('watch', function () {
   watch = true;
-  gulp.watch(['test/**', 'lib/**'], ['test']);
+  gulp.watch(['test/**', 'lib/**'], ['lint', 'test']);
 });
