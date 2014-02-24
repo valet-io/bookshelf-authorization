@@ -82,6 +82,10 @@ describe('Rule Resolver', function () {
         .to.be.empty;
     });
 
+    it('can handle empty input', function () {
+      expect(resolver.rules()).to.be.empty;
+    });
+
   });
 
   describe('#isModel', function () {
