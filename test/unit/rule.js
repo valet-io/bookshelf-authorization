@@ -34,14 +34,14 @@ describe('Rule', function () {
 
   });
 
-  describe('#eval', function () {
+  describe('#run', function () {
 
     it('resolves when test === true', function () {
-      return new Rule(true).eval();
+      return new Rule(true).run();
     });
 
     it('rejects when test === false', function () {
-      return expect(new Rule(false).eval())
+      return expect(new Rule(false).run())
         .to.be.rejectedWith(AuthorizationError);
     });
 
@@ -50,7 +50,7 @@ describe('Rule', function () {
       it('rejects when fn() === false', function () {
         return expect(new Rule(function () {
           return false;
-        }).eval())
+        }).run())
         .to.be.rejectedWith(AuthorizationError);
       });
 
@@ -58,7 +58,7 @@ describe('Rule', function () {
         return new Rule(function () {
           return true;
         })
-        .eval()
+        .run()
         .then(function (value) {
           expect(value).to.be.null;
         });
@@ -68,7 +68,7 @@ describe('Rule', function () {
         return new Rule(function () {
           return Promise.resolve('resolution');
         })
-        .eval()
+        .run()
         .then(function (value) {
           expect(value).to.be.null;
         });
@@ -77,14 +77,14 @@ describe('Rule', function () {
       it('rejects when fn() is a rejected promise', function () {
         return expect(new Rule(function () {
           return Promise.reject(new Error('reason'));
-        }).eval())
+        }).run())
         .to.be.rejectedWith(AuthorizationError, 'reason');
       });
 
       it('rejects when fn throws', function () {
         return expect(new Rule(function () {
           throw new Error('reason');
-        }).eval())
+        }).run())
         .to.be.rejectedWith(AuthorizationError, 'reason');
       });
 
