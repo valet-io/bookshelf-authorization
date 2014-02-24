@@ -9,13 +9,11 @@ var resolve   = require('../../lib/resolve')(ModelBase);
 describe('Rule Resolver', function () {
 
   it('resolves the authorization tests for a given user, method, target', function () {
-    var test = function () {};
     var Model = ModelBase.extend({
-      authorization: [{method: 'write', user: UserBase, test: test}]
+      authorization: [{method: 'write', user: UserBase}]
     });
     expect(resolve(UserBase, 'write', Model))
-      .to.have.length(1)
-      .and.to.have.property('0', test);
+      .to.have.length(1);
   });
 
   describe('#authorization', function () {
@@ -78,12 +76,6 @@ describe('Rule Resolver', function () {
     it('excludes items with non-matching methods', function () {
       expect(resolve.rules([{method: 'write'}], undefined, 'read'))
         .to.be.empty;
-    });
-
-    it('reduces to the tests', function () {
-      expect(resolve.rules([{user: User}, {test: true}]))
-        .to.have.length(1)
-        .and.have.property('0', true);
     });
 
   });
