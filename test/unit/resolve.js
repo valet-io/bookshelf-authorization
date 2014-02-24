@@ -8,6 +8,16 @@ var resolve   = require('../../lib/resolve')(ModelBase);
 
 describe('Rule Resolver', function () {
 
+  it('resolves the authorization tests for a given user, method, target', function () {
+    var test = function () {};
+    var Model = ModelBase.extend({
+      authorization: [{method: 'write', user: UserBase, test: test}]
+    });
+    expect(resolve(UserBase, 'write', Model))
+      .to.have.length(1)
+      .and.to.have.property('0', test);
+  });
+
   describe('#authorization', function () {
 
     it('returns the authorization from a model instance', function () {
@@ -73,8 +83,7 @@ describe('Rule Resolver', function () {
     it('reduces to the tests', function () {
       expect(resolve.rules([{user: User}, {test: true}]))
         .to.have.length(1)
-        .and.have.property('0')
-        .that.is.true;
+        .and.have.property('0', true);
     });
 
   });
