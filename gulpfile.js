@@ -16,7 +16,7 @@ gulp.task('cover', function () {
 gulp.task('test', ['cover'], function () {
   require('mocha-as-promised')();
   require('chai').use(require('chai-as-promised'));
-  return gulp.src(['test/unit/*.js', 'test/unit/integration/*.js'])
+  return gulp.src(['test/unit/*.js', 'test/integration/*.js'])
     .pipe(plugins.mocha())
     .on('error', function (err) {
       gutil.log(err.toString())
