@@ -33,7 +33,11 @@
     "gulp-istanbul": "~0.1.1",
     "chai": "~1.9.0",
     "lodash": "~2.4.1",
-    "sinon": "~1.8.2"
+    "sinon": "~1.8.2",
+    "mocha": "~1.17.1",
+    "mocha-as-promised": "~2.0.0",
+    "chai-as-promised": "~4.1.0",
+    "gulp-util": "~2.2.14"
   },
   "peerDependencies": {
     "bookshelf": ">=0.6.x"
