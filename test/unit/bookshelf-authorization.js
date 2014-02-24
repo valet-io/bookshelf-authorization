@@ -3,7 +3,7 @@ var _                      = require('lodash');
 var sinon                  = require('sinon');
 
 var bookshelf              = require('../mocks/bookshelf');
-var BookshelfAuthorization = require('../../lib/bookshelf-authorization');
+var bookshelfAuthorization = require('../../lib/bookshelf-authorization');
 
 describe('Bookshelf Authorization', function () {
   'use strict';
@@ -13,7 +13,7 @@ describe('Bookshelf Authorization', function () {
   });
 
   it('loads the registry plugin', function () {
-    this.bookshelf.plugin(BookshelfAuthorization);
+    this.bookshelf.plugin(bookshelfAuthorization);
     expect(this.bookshelf).to.itself.respondTo('model');
   });
 
@@ -21,14 +21,14 @@ describe('Bookshelf Authorization', function () {
     var registry = require('bookshelf/plugins/registry');
     this.bookshelf.plugin(registry);
     sinon.spy(this.bookshelf, 'plugin');
-    this.bookshelf.plugin(BookshelfAuthorization);
+    this.bookshelf.plugin(bookshelfAuthorization);
     sinon.assert.neverCalledWith(this.bookshelf.plugin, registry);
   });
 
   describe('Bookshelf plugin', function () {
 
     beforeEach(function () {
-      this.bookshelf.plugin(BookshelfAuthorization);
+      this.bookshelf.plugin(bookshelfAuthorization);
     });
 
     it('sets the UserBase on the Bookshelf instance', function () {
@@ -49,7 +49,7 @@ describe('Bookshelf Authorization', function () {
 
     var Bases;
     beforeEach(function () {
-      Bases = BookshelfAuthorization(this.bookshelf, this.bookshelf.Model);
+      Bases = bookshelfAuthorization(this.bookshelf, this.bookshelf.Model);
     });
 
     it('returns the ModelBase', function () {
