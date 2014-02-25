@@ -1,6 +1,7 @@
+'use strict';
+
 var expect    = require('chai').expect;
 var sinon     = require('sinon');
-var Promise   = require('bluebird');
 var ModelBase = require('../mocks/model');
 var UserBase  = require('../mocks/user');
 var Rule      = require('../../lib/rule');
@@ -9,10 +10,26 @@ var resolver  = require('../../lib/resolver');
 
 describe('Can', function () {
 
+  var can;
+  beforeEach(function () {
+    can = new Can(UserBase);
+  });
+
   describe('constructor', function () {
 
     it('stores the source model', function () {
-      expect(new Can(UserBase)).to.have.property('_user', UserBase);
+      expect(can).to.have.property('_user', UserBase);
+    });
+
+    it('generates convenience #do methods for Can.methods', function () {
+      sinon.stub(Can.prototype, 'do');
+      can = new Can(UserBase);
+      expect(can).to.respondTo('write');
+      expect(can).to.respondTo('read');
+      can.write(ModelBase);
+      expect(can.do).to.have.been.calledWith('write', ModelBase);
+      expect(can.do).to.have.been.calledOn(can);
+      Can.prototype.do.restore();
     });
     
   });
@@ -23,6 +40,14 @@ describe('Can', function () {
       expect(Can.create(true))
         .to.be.an.instanceOf(Can)
         .and.to.have.property('_user', true);
+    });
+
+  });
+
+  describe('Can.methods', function () {
+
+    it('stores the methods', function () {
+      expect(Can.methods).to.deep.equal(['read', 'write']);
     });
 
   });
@@ -39,7 +64,7 @@ describe('Can', function () {
 
     it('passes the user, method, and target to the rule resolver', function () {
       resolver.resolve.returns([]);
-      new Can(UserBase).do('write', ModelBase);
+      can.do('write', ModelBase);
       expect(resolver.resolve).to.have.been.calledWith(UserBase, 'write', ModelBase);
     });
 
@@ -50,7 +75,7 @@ describe('Can', function () {
       return new Can(UserBase)
         .do('write', ModelBase)
         .finally(function () {
-          expect(rule.run).to.have.been.calledWith(UserBase, ModelBase);        
+          expect(rule.run).to.have.been.calledWith(UserBase, ModelBase);
         });
     });
 
