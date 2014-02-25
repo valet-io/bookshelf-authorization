@@ -20,8 +20,7 @@ describe('Can', function () {
   describe('#do', function () {
 
     beforeEach(function () {
-      sinon.stub(resolver, 'resolve')
-        .returns([new Rule(true)]);
+      sinon.stub(resolver, 'resolve');
     });
 
     afterEach(function () {
@@ -29,8 +28,20 @@ describe('Can', function () {
     });
 
     it('passes the user, method, and target to the rule resolver', function () {
+      resolver.resolve.returns([]);
       new Can(UserBase).do('write', ModelBase);
       sinon.assert.calledWith(resolver.resolve, UserBase, 'write', ModelBase);
+    });
+
+    it('runs each rule', function () {
+      var rule = new Rule(true);
+      sinon.spy(rule, 'run');
+      resolver.resolve.returns([rule]);
+      return new Can(UserBase)
+        .do('write', ModelBase)
+        .finally(function () {
+          sinon.assert.calledWith(rule.run, UserBase, ModelBase);        
+        });
     });
 
   });
