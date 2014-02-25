@@ -44,14 +44,6 @@ describe('Can', function () {
 
   });
 
-  describe('Can.methods', function () {
-
-    it('stores the methods', function () {
-      expect(Can.methods).to.deep.equal(['read', 'write']);
-    });
-
-  });
-
   describe('#do', function () {
 
     beforeEach(function () {
