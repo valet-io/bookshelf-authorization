@@ -1,5 +1,6 @@
+'use strict';
+
 var expect    = require('chai').expect;
-var _         = require('lodash');
 var UserBase  = require('../mocks/user');
 var ModelBase = require('../mocks/model');
 
