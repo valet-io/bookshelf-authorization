@@ -1,31 +1,36 @@
 var expect    = require('chai').expect;
 var _         = require('lodash');
-var ModelBase = require('../../lib/model')(require('../mocks/model'));
+var UserBase  = require('../mocks/user');
+var ModelBase = require('../mocks/model');
 
 describe('Integration: Configuration API', function () {
 
-  var Model, fn;
+  var Model, User, fn;
   beforeEach(function () {
     Model = ModelBase.extend();
-    fn = function () {};
+    User = UserBase.extend();
   });
 
-  describe('Operation', function () {
+  describe('User', function () {
 
-    it('can authorize an operation', function () {
-      Model.prototype.authorization.read = false;
-      Model.authorize('read').always();
-      expect(Model.prototype.authorization.read).to.be.true;
+    it('can authorize a user to do anything', function () {
+      Model.authorize(User).always();
+      var rule = Model.authorization.rules[0];
+      expect(rule).to.have.property('test', true);
+      expect(rule).to.have.property('user', User);
     });
 
-    it('can prevent an operation', function () {
-      Model.authorize('read').never();
-      expect(Model.prototype.authorization.read).to.be.false;
+    it('can prevent a user from doing anything', function () {
+      Model.authorize(User).never();
+      var rule = Model.authorization.rules[0];
+      expect(rule).to.have.property('test', false);
     });
 
-    it('can define an authorization handler', function () {
-      Model.authorize('read').when(fn);
-      expect(Model.prototype.authorization.read).to.equal(fn);
+    it('can validate all user actions with a function', function () {
+      var fn = function () {};
+      Model.authorize(User).when(fn);
+      var rule = Model.authorization.rules[0];
+      expect(rule).to.have.property('test', fn);
     });
 
   });
