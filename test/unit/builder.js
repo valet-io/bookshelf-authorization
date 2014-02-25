@@ -64,12 +64,12 @@ describe('Builder', function () {
     });
 
     it('returns the builder for chaining', function () {
-      expect(builder.to()).to.be.an.instanceOf(Builder);
+      expect(builder.to()).to.equal(builder);
     });
 
     it('has method properties for extra sugar', function () {
       expect(builder.to.write)
-        .to.be.an.instanceOf(Builder)
+        .to.equal(builder)
         .and.have.property('_method', 'write');
     });
 
