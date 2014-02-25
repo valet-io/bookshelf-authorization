@@ -53,7 +53,7 @@ describe('RuleBuilder', function () {
 
       it('applies the rule as true', function () {
         builder.always();
-        sinon.assert.calledWith(apply, true);
+        expect(apply).to.have.been.calledWith(true);
       });
 
     });
@@ -62,7 +62,7 @@ describe('RuleBuilder', function () {
 
       it('applies the rule as false', function () {
         builder.never();
-        sinon.assert.calledWith(apply, false);
+        expect(apply).to.have.been.calledWith(false);
       });
 
     });
@@ -72,7 +72,7 @@ describe('RuleBuilder', function () {
       it('applies a function rule', function () {
         var fn = function () {};
         builder.when(fn);
-        sinon.assert.calledWith(apply, fn);
+        expect(apply).to.have.been.calledWith(fn);
       });
 
       it('enforces the presence of a function', function () {

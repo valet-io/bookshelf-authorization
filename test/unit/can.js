@@ -40,7 +40,7 @@ describe('Can', function () {
     it('passes the user, method, and target to the rule resolver', function () {
       resolver.resolve.returns([]);
       new Can(UserBase).do('write', ModelBase);
-      sinon.assert.calledWith(resolver.resolve, UserBase, 'write', ModelBase);
+      expect(resolver.resolve).to.have.been.calledWith(UserBase, 'write', ModelBase);
     });
 
     it('runs each rule', function () {
@@ -50,7 +50,7 @@ describe('Can', function () {
       return new Can(UserBase)
         .do('write', ModelBase)
         .finally(function () {
-          sinon.assert.calledWith(rule.run, UserBase, ModelBase);        
+          expect(rule.run).to.have.been.calledWith(UserBase, ModelBase);        
         });
     });
 

@@ -53,7 +53,7 @@ describe('Rule', function () {
         return new Rule(spy)
           .run('u')
           .finally(function () {
-            sinon.assert.calledWith(spy, 'u');
+            expect(spy).to.have.been.calledWith('u');
           });
       });
 
@@ -62,7 +62,7 @@ describe('Rule', function () {
         return new Rule(spy)
           .run(null, 't')
           .finally(function () {
-            sinon.assert.calledOn(spy, 't');
+            expect(spy).to.have.been.calledOn('t');
           });
       });
 

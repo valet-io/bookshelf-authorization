@@ -22,7 +22,7 @@ describe('Bookshelf Authorization', function () {
     this.bookshelf.plugin(registry);
     sinon.spy(this.bookshelf, 'plugin');
     this.bookshelf.plugin(bookshelfAuthorization);
-    sinon.assert.neverCalledWith(this.bookshelf.plugin, registry);
+    expect(this.bookshelf.plugin).to.not.have.been.calledWith(registry);
   });
 
   describe('Bookshelf plugin', function () {

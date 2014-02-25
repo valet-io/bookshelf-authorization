@@ -37,7 +37,8 @@
     "mocha": "~1.17.1",
     "mocha-as-promised": "~2.0.0",
     "chai-as-promised": "~4.1.0",
-    "gulp-util": "~2.2.14"
+    "gulp-util": "~2.2.14",
+    "sinon-chai": "~2.5.0"
   },
   "peerDependencies": {
     "bookshelf": ">=0.6.x"

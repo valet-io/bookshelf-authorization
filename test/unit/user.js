@@ -22,7 +22,7 @@ describe('UserBase', function () {
 
       it('returns a Can instance for the User constructor', function () {
         expect(User.can).to.be.an.instanceOf(Can);
-        sinon.assert.calledWith(Can.create, User);
+        expect(Can.create).to.have.been.calledWith(User);
       });
       
     });
@@ -44,7 +44,7 @@ describe('UserBase', function () {
 
       it('returns a Can instance for the user', function () {
         expect(user.can).to.be.an.instanceOf(Can);
-        sinon.assert.calledWith(Can.create, user);
+        expect(Can.create).to.have.been.calledWith(user);
       });
 
     });

@@ -30,7 +30,7 @@ describe('Rule Resolver', function () {
     it('creates a constructor to access authorization on a ctor', function () {
       var Target = sinon.spy(ModelBase.extend());
       expect(resolver.authorization(Target)).to.equal(Target.prototype.authorization);
-      sinon.assert.calledWithNew(Target);
+      expect(Target).to.have.been.calledWithNew;
     });
 
     it('throws if the target is not an instance or ctor', function () {
