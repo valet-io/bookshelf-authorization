@@ -64,14 +64,9 @@ describe('Integration: Configuration API', function () {
       expect(rules.first).to.have.property('test', true);
     });
 
-    it('can prevent a user from doing anything', function () {
-      Model.authorize.a(User).never();
-      expect(rules.first).to.have.property('test', false);
-    });
-
-    it('can validate user actions with a function', function () {
-      Model.authorize.a(User).when(fn);
-      expect(rules.first).to.have.property('test', fn);
+    it('has an alternate "an" syntax for grammar', function () {
+      Model.authorize.an(User).always();
+      expect(rules.first).to.have.property('test', true);
     });
 
   });
@@ -79,26 +74,35 @@ describe('Integration: Configuration API', function () {
   describe('Method', function () {
 
     afterEach(function () {
-      expect(rules.first).to.have.property('method', 'write');
-    });
-
-    it('can validate all uses of any method', function () {
-      Model.authorize.anyone.to('write').always();
-      expect(rules.first).to.have.property('test', true);
-    });
-
-    it('can prevent all uses of a method', function () {
-      Model.authorize.anyone.to('write').never();
-      expect(rules.first).to.have.property('test', false);
-    });
-
-    it('can validate uses of a method with a function', function () {
-      Model.authorize.anyone.to('write').when(fn);
       expect(rules.first).to.have.property('test', fn);
     });
 
-    it('can use the chained syntax for registered methods', function () {
+    it('can validate all uses of any method', function () {
+      Model.authorize.anyone.to('say').when(fn);
+      expect(rules.first).to.have.property('method', 'say');
+    });
+
+    it('can use the chained syntax for write', function () {
       Model.authorize.anyone.to.write.when(fn);
+      expect(rules.first).to.have.property('method', 'write');
+    });
+
+    it('can use the chained syntax for read', function () {
+      Model.authorize.anyone.to.read.when(fn);
+      expect(rules.first).to.have.property('method', 'read');
+    });
+
+  });
+
+  describe('User + Method', function () {
+
+    afterEach(function () {
+      expect(rules.first).to.have.property('user', User);
+      expect(rules.first).to.have.property('method', 'write');
+    });
+
+    it('can validate all method calls by a specific user', function () {
+      Model.authorize.a(User).to.write.when(fn);
       expect(rules.first).to.have.property('test', fn);
     });
 
