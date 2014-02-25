@@ -1,24 +1,25 @@
 'use strict';
 
-var expect      = require('chai').expect;
-var sinon       = require('sinon');
-var Builder     = require('../../lib/builder');
+var expect   = require('chai').expect;
+var sinon    = require('sinon');
+var UserBase = require('../mocks/user');
+var Builder  = require('../../lib/builder');
 
 describe('Builder', function () {
 
   var builder, rules;
   beforeEach(function () {
     rules = [];
-    builder = new Builder('U', rules);
+    builder = new Builder(UserBase, rules);
   });
 
   describe('Builder#create', function () {
 
     it('creates a new Builder', function () {
-      var b = Builder.create('U', 'r');
+      var b = Builder.create(UserBase, 'r');
       expect(b)
         .to.be.an.instanceOf(Builder)
-        .and.to.have.property('_user', 'U');
+        .and.to.have.property('_user', UserBase);
       expect(b).to.have.property('_rules', 'r');
     });
 
@@ -26,8 +27,12 @@ describe('Builder', function () {
 
   describe('constructor', function () {
 
+    it('checks that the User is a ctor w/ #can', function () {
+      expect(Builder.create).to.throw(/Invalid user/);
+    });
+
     it('stores the User', function () {
-      expect(builder).to.have.property('_user', 'U');
+      expect(builder).to.have.property('_user', UserBase);
     });
 
     it('stores the target for new rules', function () {
