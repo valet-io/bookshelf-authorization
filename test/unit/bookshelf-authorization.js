@@ -34,13 +34,13 @@ describe('Bookshelf Authorization', function () {
     it('sets the UserBase on the Bookshelf instance', function () {
       expect(this.bookshelf)
         .to.have.property('User')
-        .and.itself.respondTo('can');
+        .with.property('can');
     });
 
     it('overwrites Bookshelf.Model', function () {
       expect(this.bookshelf)
         .to.have.property('Model')
-        .and.have.property('authorize');
+        .with.property('authorize');
     });
 
   });
@@ -55,13 +55,13 @@ describe('Bookshelf Authorization', function () {
     it('returns the ModelBase', function () {
       expect(Bases)
         .to.have.property('Model')
-        .and.have.property('authorize');
+        .with.property('authorize');
     });
 
     it('returns the UserBase', function () {
       expect(Bases)
         .to.have.property('User')
-        .and.itself.respondTo('can');
+        .with.property('can');
     });
 
   });
