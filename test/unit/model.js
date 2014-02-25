@@ -12,9 +12,8 @@ describe('Resource', function () {
   describe('.authorization', function () {
 
     it('defaults to full authorization', function () {
-      expect(model).to.have.deep.property('authorization.all', true);
-      expect(model).to.have.deep.property('authorization.read', true);
-      expect(model).to.have.deep.property('authorization.write', true);
+      expect(model).to.have.property('authorization')
+        .that.is.empty;
     });
 
   });
