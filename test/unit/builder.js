@@ -49,6 +49,14 @@ describe('Builder', function () {
     });
   });
 
+  describe('#anyone (getter)', function () {
+
+    it('passes through the builder (sugar)', function () {
+      expect(builder.anyone).to.equal(builder);
+    });
+
+  });
+
   describe('#to', function () {
 
     it('sets the method', function () {
