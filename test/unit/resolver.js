@@ -1,36 +1,35 @@
 'use strict';
 
 var expect    = require('chai').expect;
-var sinon     = require('sinon');
 var ModelBase = require('../mocks/model');
 var UserBase  = require('../mocks/user');
 var resolver  = require('../../lib/resolver');
 
 describe('Rule Resolver', function () {
 
+  var Model;
+  beforeEach(function () {
+    Model = ModelBase.extend();
+  });
+
   describe('#resolve', function () {
 
     it('resolves the authorization tests for a given user, method, target', function () {
-      var Model = ModelBase.extend({
-        authorization: [{method: 'write', user: UserBase}]
-      });
-      expect(resolver.resolve(UserBase, 'write', Model))
-        .to.have.length(1);
+      Model.authorization = {};
+      Model.authorization.rules = [{method: 'write', user: UserBase}];
+      expect(resolver.resolve(UserBase, 'write', Model)).to.have.length(1);
     });
 
   });
 
   describe('#authorization', function () {
 
-    it('returns the authorization from a model instance', function () {
-      var target = new ModelBase();
-      expect(resolver.authorization(target)).to.equal(target.authorization);
+    it('returns the authorization from constructor for a Model instance', function () {
+      expect(resolver.authorization(new Model())).to.equal(Model.authorization);
     });
 
-    it('creates a constructor to access authorization on a ctor', function () {
-      var Target = sinon.spy(ModelBase.extend());
-      expect(resolver.authorization(Target)).to.equal(Target.prototype.authorization);
-      expect(Target).to.have.been.calledWithNew;
+    it('returns the authorization on a ctor', function () {
+      expect(resolver.authorization(Model)).to.equal(Model.authorization);
     });
 
     it('throws if the target is not an instance or ctor', function () {
