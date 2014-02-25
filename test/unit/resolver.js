@@ -4,7 +4,7 @@ var expect    = require('chai').expect;
 var sinon     = require('sinon');
 var ModelBase = require('../mocks/model');
 var UserBase  = require('../mocks/user');
-var resolver  = require('../../lib/resolver')(ModelBase);
+var resolver  = require('../../lib/resolver');
 
 describe('Rule Resolver', function () {
 
