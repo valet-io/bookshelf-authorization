@@ -88,30 +88,4 @@ describe('Rule Resolver', function () {
 
   });
 
-  describe('#isModel', function () {
-
-    it('checks whether the input is a model instance', function () {
-      expect(resolver.isModel(ModelBase)).to.be.false;
-      expect(resolver.isModel(new ModelBase())).to.be.true;
-    });
-
-    it('can handle empty input', function () {
-      expect(resolver.isModel).to.not.throw();
-    });
-
-  });
-
-  describe('#isCtor', function () {
-
-    it('checks whether the input is a model constructor', function () {
-      expect(resolver.isCtor(ModelBase)).to.be.true;
-      expect(resolver.isCtor(new ModelBase())).to.be.false;
-    });
-
-    it('can handle empty input', function () {
-      expect(resolver.isCtor).to.not.throw();
-    });
-
-  });
-
 });
