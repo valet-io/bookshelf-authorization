@@ -26,16 +26,18 @@ describe('Model', function () {
 
   });
 
-  describe('#authorize', function () {
+  describe('#authorize (getter)', function () {
 
-    it('returns a new rule builder', function () {
-      expect(Model.authorize(UserBase)).to.be.an.instanceOf(Builder);
+    beforeEach(function () {
+      sinon.spy(Builder, 'create');
     });
 
-    it('calls the builder with the User and rule target', function () {
-      sinon.spy(Builder, 'create');
-      Model.authorize(UserBase);
-      expect(Builder.create).to.have.been.calledWith(UserBase, Model.authorization.rules);
+    afterEach(function () {
+      Builder.create.restore();
+    });
+
+    it('returns a new rule builder', function () {
+      expect(Model.authorize).to.be.an.instanceOf(Builder);
     });
 
   });

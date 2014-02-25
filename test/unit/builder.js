@@ -10,30 +10,21 @@ describe('Builder', function () {
   var builder, rules;
   beforeEach(function () {
     rules = [];
-    builder = new Builder(UserBase, rules);
+    builder = new Builder(rules);
   });
 
   describe('Builder#create', function () {
 
     it('creates a new Builder', function () {
-      var b = Builder.create(UserBase, 'r');
+      var b = Builder.create(rules);
       expect(b)
         .to.be.an.instanceOf(Builder)
-        .and.to.have.property('_user', UserBase);
-      expect(b).to.have.property('_rules', 'r');
+        .and.have.property('_rules', rules);
     });
 
   });
 
   describe('constructor', function () {
-
-    it('checks that the User is a ctor w/ #can', function () {
-      expect(Builder.create).to.throw(/Invalid user/);
-    });
-
-    it('stores the User', function () {
-      expect(builder).to.have.property('_user', UserBase);
-    });
 
     it('stores the target for new rules', function () {
       expect(builder)
@@ -41,6 +32,21 @@ describe('Builder', function () {
         .that.equals(rules);
     });
 
+  });
+
+  describe('#a / #an', function () {
+    ['a', 'an'].forEach(function (method) {
+
+      it('checks that the User is a ctor w/ #can', function () {
+        expect(builder[method]).to.throw(/Invalid user/);
+        expect(builder[method].bind(builder, new UserBase())).to.throw(/Invalid user/);
+      });
+
+      it('stores the User', function () {
+        expect(builder.a(UserBase)).to.have.property('_user', UserBase);
+      });
+
+    });
   });
 
   describe('#to', function () {
