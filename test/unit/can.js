@@ -17,6 +17,16 @@ describe('Can', function () {
     
   });
 
+  describe('Can#create', function () {
+
+    it('creates an new Can instance', function () {
+      expect(Can.create(true))
+        .to.be.an.instanceOf(Can)
+        .and.to.have.property('_user', true);
+    });
+
+  });
+
   describe('#do', function () {
 
     beforeEach(function () {
