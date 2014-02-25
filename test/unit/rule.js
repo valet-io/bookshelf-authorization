@@ -1,6 +1,7 @@
 'use strict';
 
 var expect             = require('chai').expect;
+var sinon              = require('sinon');
 var Promise            = require('bluebird');
 var Rule               = require('../../lib/rule');
 var AuthorizationError = require('../../lib/error');
@@ -46,6 +47,24 @@ describe('Rule', function () {
     });
 
     describe('test = fn', function () {
+
+      it('calls the function with the user', function () {
+        var spy = sinon.spy();
+        return new Rule(spy)
+          .run('u')
+          .finally(function () {
+            sinon.assert.calledWith(spy, 'u');
+          });
+      });
+
+      it('binds the function to the target', function () {
+        var spy = sinon.spy();
+        return new Rule(spy)
+          .run(null, 't')
+          .finally(function () {
+            sinon.assert.calledOn(spy, 't');
+          });
+      });
 
       it('rejects when fn() === false', function () {
         return expect(new Rule(function () {
