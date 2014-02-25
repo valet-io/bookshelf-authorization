@@ -27,6 +27,17 @@ describe('UserBase', function () {
       
     });
 
+    describe('#extend', function () {
+
+      it('applies the can getter', function () {
+        var Parent = User;
+        var Child = Parent.extend();
+        expect(Parent).to.have.property('can');
+        expect(Child).to.have.property('can');
+      });
+
+    });
+
   });
 
   describe('user', function () {
