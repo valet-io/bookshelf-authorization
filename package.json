@@ -43,6 +43,7 @@
     "bookshelf": ">=0.6.x"
   },
   "dependencies": {
-    "bluebird": "~1.0.5"
+    "bluebird": "~1.0.5",
+    "create-error": "~0.3.1"
   }
 }
