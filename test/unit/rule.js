@@ -25,6 +25,16 @@ describe('Rule', function () {
       }).to.throw(/Invalid authorization test/);
     });
 
+    it('stores the method', function () {
+      expect(new Rule(true, 'write'))
+        .to.have.property('method', 'write');
+    });
+
+    it('stores the user', function () {
+      expect(new Rule(true, 'write', 'U'))
+        .to.have.property('user', 'U');
+    });
+
   });
 
   describe('#type', function () {
