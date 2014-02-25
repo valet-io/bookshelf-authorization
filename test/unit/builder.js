@@ -2,102 +2,88 @@
 
 var expect      = require('chai').expect;
 var sinon       = require('sinon');
-var RuleBuilder = require('../../lib/builder');
+var Builder     = require('../../lib/builder');
 
-describe('RuleBuilder', function () {
+describe('Builder', function () {
 
-  var builder;
+  var builder, rules;
   beforeEach(function () {
-    builder = new RuleBuilder({});
+    rules = [];
+    builder = new Builder('U', rules);
+  });
+
+  describe('Builder#create', function () {
+
+    it('creates a new Builder', function () {
+      var b = Builder.create('U', 'r');
+      expect(b)
+        .to.be.an.instanceOf(Builder)
+        .and.to.have.property('_user', 'U');
+      expect(b).to.have.property('_rules', 'r');
+    });
+
   });
 
   describe('constructor', function () {
 
-    it('stores the target Model', function () {
-      expect(new RuleBuilder('M')).to.have.property('_target', 'M');
+    it('stores the User', function () {
+      expect(builder).to.have.property('_user', 'U');
     });
 
-    it('stores the method', function () {
-      expect(new RuleBuilder({}, 'read')).to.have.property('_method', 'read');
+    it('stores the target for new rules', function () {
+      expect(builder)
+        .to.have.property('_rules')
+        .that.equals(rules);
     });
-
-    it('sets the default authorization if none is present', function () {
-      expect(new RuleBuilder({})).to.have.deep.property('_target.authorization.all', true);
-    })
 
   });
 
-  describe('#for', function () {
+  describe('#to', function () {
 
-    it('sets the User', function () {
-      expect(builder.for('U')).to.have.property('_user', 'U');
+    it('sets the method', function () {
+      expect(builder.to('write')).to.have.property('_method', 'write');
     });
 
     it('returns the builder for chaining', function () {
-      expect(builder.for()).to.be.an.instanceOf(RuleBuilder);
+      expect(builder.to()).to.be.an.instanceOf(Builder);
     });
 
   });
 
-  describe('rules', function () {
-    var apply;
-    beforeEach(function () {
-      apply = sinon.stub(builder, '_apply');
-    });
-
-    afterEach(function () {
-      apply.restore();
-    });
+  describe('rule setters', function () {
 
     describe('#always', function () {
 
-      it('applies the rule as true', function () {
+      it('pushes a new rule with test = true', function () {
         builder.always();
-        expect(apply).to.have.been.calledWith(true);
+        expect(rules)
+          .to.have.property(0)
+          .with.property('test', true);
       });
 
     });
 
     describe('#never', function () {
 
-      it('applies the rule as false', function () {
+      it('pushes a new rule with test = false', function () {
         builder.never();
-        expect(apply).to.have.been.calledWith(false);
+        expect(rules)
+          .to.have.property(0)
+          .with.property('test', false);
       });
 
     });
 
     describe('#when', function () {
 
-      it('applies a function rule', function () {
+      it('pushes a new rule with test = fn', function () {
         var fn = function () {};
         builder.when(fn);
-        expect(apply).to.have.been.calledWith(fn);
+        expect(rules)
+          .to.have.property(0)
+          .with.property('test', fn);
       });
 
-      it('enforces the presence of a function', function () {
-        expect(builder.when).to.throw();
-      });
-
-    });
-
-  });
-
-  describe('#_apply', function () {
-
-    beforeEach(function () {
-      builder._method = 'read';
-    });
-
-    it('sets the rule on the method when no user is present', function () {
-      builder._apply('r');
-      expect(builder._target.authorization.read).to.equal('r');
-    });
-
-    it('sets the rule on the user if present', function () {
-      builder._user = 'U';
-      builder._apply('r');
-      expect(builder._target.authorization.read.U).to.equal('r');
     });
 
   });
