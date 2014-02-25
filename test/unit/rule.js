@@ -59,31 +59,38 @@ describe('Rule', function () {
     describe('test = fn', function () {
 
       it('calls the function with the user', function () {
-        var spy = sinon.spy();
-        return new Rule(spy)
+        var stub = sinon.stub().returns(true);
+        return new Rule(stub)
           .run('u')
           .finally(function () {
-            expect(spy).to.have.been.calledWith('u');
+            expect(stub).to.have.been.calledWith('u');
           });
       });
 
       it('binds the function to the target', function () {
-        var spy = sinon.spy();
-        return new Rule(spy)
+        var stub = sinon.stub().returns(true);
+        return new Rule(stub)
           .run(null, 't')
           .finally(function () {
-            expect(spy).to.have.been.calledOn('t');
+            expect(stub).to.have.been.calledOn('t');
           });
       });
 
-      it('rejects when fn() === false', function () {
+      it('rejects when fn returns false', function () {
         return expect(new Rule(function () {
           return false;
         }).run())
         .to.be.rejectedWith(AuthorizationError);
       });
 
-      it('resolves when fn() == true', function () {
+      it('rejects when fn returns falsy', function () {
+        return expect(new Rule(function () {
+          return null;
+        }).run())
+        .to.be.rejectedWith(AuthorizationError);
+      });
+
+      it('resolves when fn returns true', function () {
         return new Rule(function () {
           return true;
         })
@@ -93,7 +100,17 @@ describe('Rule', function () {
         });
       });
 
-      it('resolves when fn() is a resolved promise', function () {
+      it('rejects when fn returns truthy', function () {
+        return new Rule(function () {
+          return 'truthy';
+        })
+        .run()
+        .then(function (value) {
+          expect(value).to.be.null;
+        });
+      });
+
+      it('resolves when fn resolves truthy', function () {
         return new Rule(function () {
           return Promise.resolve('resolution');
         })
@@ -103,7 +120,7 @@ describe('Rule', function () {
         });
       });
 
-      it('rejects when fn() is a rejected promise', function () {
+      it('rejects when fn rejects', function () {
         return expect(new Rule(function () {
           return Promise.reject(new Error('reason'));
         }).run())
