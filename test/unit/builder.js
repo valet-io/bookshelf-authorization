@@ -53,6 +53,12 @@ describe('Builder', function () {
       expect(builder.to()).to.be.an.instanceOf(Builder);
     });
 
+    it('has method properties for extra sugar', function () {
+      expect(builder.to.write)
+        .to.be.an.instanceOf(Builder)
+        .and.have.property('_method', 'write');
+    });
+
   });
 
   describe('rule setters', function () {
