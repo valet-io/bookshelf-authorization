@@ -83,6 +83,12 @@ describe('Can', function () {
       return new Can(UserBase).do('write', ModelBase);
     });
 
+    it('rejects if only a single rule rejects', function () {
+      resolver.resolve.returns([new Rule(false)]);
+      expect(new Can(UserBase).do('write', ModelBase))
+        .to.be.rejectedWith(AuthorizationError);
+    });
+
     it('wraps multiple errors into a single one', function () {
       resolver.resolve.returns([new Rule(false), new Rule(false)]);
       return expect(new Can(UserBase).do('write', ModelBase))
