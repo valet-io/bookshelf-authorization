@@ -85,7 +85,14 @@ describe('Rule', function () {
 
       it('rejects when fn returns falsy', function () {
         return expect(new Rule(function () {
-          return null;
+          return '';
+        }).run())
+        .to.be.rejectedWith(AuthorizationError);
+      });
+
+      it('rejects when fn returns an empty array', function () {
+        return expect(new Rule(function () {
+          return [];
         }).run())
         .to.be.rejectedWith(AuthorizationError);
       });
