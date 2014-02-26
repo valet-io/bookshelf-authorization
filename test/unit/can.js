@@ -80,8 +80,21 @@ describe('Can', function () {
 
     it('resolves if any rule resolves', function () {
       resolver.resolve.returns([new Rule(true), new Rule(false)]);
-      return new Can(UserBase)
-        .do('write', ModelBase);
+      return new Can(UserBase).do('write', ModelBase);
+    });
+
+    it('wraps multiple errors into a single one', function () {
+      resolver.resolve.returns([new Rule(false), new Rule(false)]);
+      return expect(new Can(UserBase).do('write', ModelBase))
+        .to.be.rejectedWith(AuthorizationError, 'Multiple authorization rules failed.');
+    });
+
+    it('appends multiple errors to the error object', function () {
+      resolver.resolve.returns([new Rule(false), new Rule(false)]);
+      return new Can(UserBase).do('write', ModelBase)
+        .catch(function (err) {
+          expect(err).to.have.property('errors').with.length(2);
+        });
     });
 
   });
