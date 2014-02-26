@@ -88,6 +88,13 @@ describe('Can', function () {
       return new Can(UserBase).do('write', ModelBase);
     });
 
+    it('can require that 1+ rules match', function () {
+      resolver.resolve.returns([]);
+      return expect(new Can(UserBase).do('write', ModelBase, {
+        required: true
+      })).to.be.rejectedWith(AuthorizationError, /No rules matched/);
+    });
+
   });
 
 });
