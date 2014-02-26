@@ -61,12 +61,6 @@ describe('Can', function () {
       expect(resolver.resolve).to.have.been.calledWith(UserBase, 'write', ModelBase);
     });
 
-    it('throws if there are no matching rules', function () {
-      resolver.resolve.returns([]);
-      return expect(can.do('write', ModelBase))
-        .to.be.rejectedWith(AuthorizationError, /No authorization rules/);
-    });
-
     it('runs each rule', function () {
       var rule = new Rule(true);
       sinon.spy(rule, 'run');
@@ -78,29 +72,20 @@ describe('Can', function () {
         });
     });
 
-    it('resolves if any rule resolves', function () {
-      resolver.resolve.returns([new Rule(true), new Rule(false)]);
+    it('resolves if all rules resolves', function () {
+      resolver.resolve.returns([new Rule(true), new Rule(true)]);
       return new Can(UserBase).do('write', ModelBase);
     });
 
     it('rejects if only a single rule rejects', function () {
-      resolver.resolve.returns([new Rule(false)]);
+      resolver.resolve.returns([new Rule(false), new Rule(true)]);
       return expect(new Can(UserBase).do('write', ModelBase))
         .to.be.rejectedWith(AuthorizationError);
     });
 
-    it('wraps multiple errors into a single one', function () {
-      resolver.resolve.returns([new Rule(false), new Rule(false)]);
-      return expect(new Can(UserBase).do('write', ModelBase))
-        .to.be.rejectedWith(AuthorizationError, 'Multiple authorization rules failed.');
-    });
-
-    it('appends multiple errors to the error object', function () {
-      resolver.resolve.returns([new Rule(false), new Rule(false)]);
-      return new Can(UserBase).do('write', ModelBase)
-        .catch(function (err) {
-          expect(err).to.have.property('errors').with.length(2);
-        });
+    it('resolves if no rules match', function () {
+      resolver.resolve.returns([]);
+      return new Can(UserBase).do('write', ModelBase);
     });
 
   });
