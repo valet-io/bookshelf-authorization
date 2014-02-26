@@ -68,10 +68,6 @@ describe('Builder', function () {
       expect(builder.to(methods)).to.have.property('_method', methods);
     });
 
-    it('can set all methods using .administer', function () {
-      expect(builder.to.administer).to.have.property('_method', methods);
-    });
-
     it('returns the builder for chaining', function () {
       expect(builder.to()).to.equal(builder);
     });
@@ -84,12 +80,24 @@ describe('Builder', function () {
 
   });
 
+  describe('#administer', function () {
+
+    it('sets all methods to allow always', function () {
+      builder.to.administer();
+      expect(rules)
+        .to.have.length(methods.length)
+        .and.all.have.property('test', true);
+    });
+
+  });
+
   describe('rule setters', function () {
 
     it('applies rules for each method', function () {
       builder.to(methods).always();
       expect(rules)
-        .to.have.length(2);
+        .to.have.length(methods.length)
+        .and.all.have.property('test', true);
     });
 
     describe('#always', function () {
