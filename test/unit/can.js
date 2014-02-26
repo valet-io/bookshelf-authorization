@@ -77,6 +77,14 @@ describe('Can', function () {
       return new Can(UserBase).do('write', ModelBase);
     });
 
+    it('resolves with null if resolving', function () {
+      resolver.resolve.returns([new Rule(true)]);
+      return new Can(UserBase).do('write', ModelBase)
+        .then(function (value) {
+          expect(value).to.be.null;
+        });
+    });
+
     it('rejects if only a single rule rejects', function () {
       resolver.resolve.returns([new Rule(false), new Rule(true)]);
       return expect(new Can(UserBase).do('write', ModelBase))
