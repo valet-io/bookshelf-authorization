@@ -1,12 +1,13 @@
 'use strict';
 
-var expect    = require('chai').expect;
-var sinon     = require('sinon');
-var ModelBase = require('../mocks/model');
-var UserBase  = require('../mocks/user');
-var Rule      = require('../../lib/rule');
-var Can       = require('../../lib/can');
-var resolver  = require('../../lib/resolver');
+var expect             = require('chai').expect;
+var sinon              = require('sinon');
+var ModelBase          = require('../mocks/model');
+var UserBase           = require('../mocks/user');
+var Rule               = require('../../lib/rule');
+var Can                = require('../../lib/can');
+var resolver           = require('../../lib/resolver');
+var AuthorizationError = require('../../lib/resolver');
 
 describe('Can', function () {
 
@@ -56,8 +57,14 @@ describe('Can', function () {
 
     it('passes the user, method, and target to the rule resolver', function () {
       resolver.resolve.returns([]);
-      can.do('write', ModelBase);
+      can.do('write', ModelBase).catch(function () {});
       expect(resolver.resolve).to.have.been.calledWith(UserBase, 'write', ModelBase);
+    });
+
+    it('throws if there are no matching rules', function () {
+      resolver.resolve.returns([]);
+      return expect(can.do('write', ModelBase))
+        .to.be.rejectedWith(AuthorizationError, /No authorization rules/);
     });
 
     it('runs each rule', function () {
@@ -69,6 +76,12 @@ describe('Can', function () {
         .finally(function () {
           expect(rule.run).to.have.been.calledWith(UserBase, ModelBase);
         });
+    });
+
+    it('resolves if any rule resolves', function () {
+      resolver.resolve.returns([new Rule(true), new Rule(false)]);
+      return new Can(UserBase)
+        .do('write', ModelBase);
     });
 
   });
