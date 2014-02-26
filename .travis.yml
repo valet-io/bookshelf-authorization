@@ -1,3 +1,14 @@
 language: node_js
 node_js:
-  - '0.10'
+- '0.10'
+- '0.11'
+after_script:
+- npm run coveralls
+deploy:
+  provider: npm
+  email: bvdrucker@gmail.com
+  api_key:
+    secure: c1R/rhHLOT1e+5JchKI+RYcW20A60aAQjD0OdxpHgrLB99wAEXemT2Suc2ntEFNipEX2BSn9u0ouO44RTCfTYb7aBnXo1PYI0DhcvSo0U83g5F2YVY7c8mIrUZeuK6p7cZWmjPy3RI/+cgtSuthXMLAJRUEDNXaIK85KO+iXwpM=
+  on:
+    tags: true
+    repo: valet-io/bookshelf-authorization
