@@ -2,4 +2,8 @@ require('mocha-as-promised')();
 require('chai')
   .use(require('chai-as-promised'))
   .use(require('sinon-chai'));
-require('bluebird').longStackTraces()
+var Bluebird = require('bluebird');
+Bluebird.longStackTraces();
+Bluebird.onPossiblyUnhandledRejection(function(err, promise){
+  throw err;
+});
