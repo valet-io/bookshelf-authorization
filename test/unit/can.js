@@ -83,16 +83,17 @@ describe('Can', function () {
         .to.be.rejectedWith(AuthorizationError);
     });
 
-    it('resolves if no rules match', function () {
+    it('rejects if no rules match', function () {
       resolver.resolve.returns([]);
-      return new Can(UserBase).do('write', ModelBase);
+      return expect(new Can(UserBase).do('write', ModelBase))
+        .to.be.rejectedWith(AuthorizationError, /No rules matched/);
     });
 
-    it('can require that 1+ rules match', function () {
+    it('can allow no matching rules using required: false', function () {
       resolver.resolve.returns([]);
-      return expect(new Can(UserBase).do('write', ModelBase, {
-        required: true
-      })).to.be.rejectedWith(AuthorizationError, /No rules matched/);
+      return new Can(UserBase).do('write', ModelBase, {
+        required: false
+      });
     });
 
   });
