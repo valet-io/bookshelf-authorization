@@ -44,8 +44,14 @@ describe('Model', function () {
 
   describe('#extend', function () {
 
+    var Parent;
+    beforeEach(function () {
+      Parent = Model.extend({
+        protoMethod: function () {}
+      });
+    });
+
     it('resets the authorization', function () {
-      var Parent = Model.extend();
       Parent.authorization.rules.push();
       var Child = Parent.extend();
       expect(Child)
@@ -53,12 +59,11 @@ describe('Model', function () {
         .that.is.empty;
     });
 
+    it('preserves the normal behavior', function () {
+      var Child = Parent.extend();
+      expect(Child).to.respondTo('protoMethod');
+    });
+
   });
-
-  // describe('.authorize', function () {
-
-  //   // describe('#writes');
-  //   // describe()
-  // })
 
 });

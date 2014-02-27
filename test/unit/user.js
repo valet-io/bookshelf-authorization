@@ -29,11 +29,20 @@ describe('UserBase', function () {
 
     describe('#extend', function () {
 
+      var Parent, Child;
+      beforeEach(function () {
+        Parent = User.extend({
+          protoMethod: function () {}
+        });
+        Child = Parent.extend();
+      });
+
       it('applies the can getter', function () {
-        var Parent = User;
-        var Child = Parent.extend();
-        expect(Parent).to.have.property('can');
         expect(Child).to.have.property('can');
+      });
+
+      it('preserves the normal behavior', function () {
+        expect(Child).to.respondTo('protoMethod');
       });
 
     });
