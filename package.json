@@ -4,8 +4,7 @@
   "description": "An authorization library for use with Bookshelf.js",
   "main": "./lib/bookshelf-authorization.js",
   "scripts": {
-    "test": "gulp test",
-    "coveralls": "cat ./coverage/lcov.info | coveralls"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
