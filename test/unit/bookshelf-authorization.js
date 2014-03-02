@@ -5,6 +5,8 @@ var sinon                  = require('sinon');
 var _                      = require('lodash');
 var Bookshelf              = require('../mocks/bookshelf');
 var bookshelfAuthorization = require('../../lib/bookshelf-authorization');
+var registry               = require('bookshelf/plugins/registry');
+var resolver               = require('../../lib/resolver');
 
 describe('Bookshelf Authorization', function () {
 
@@ -20,6 +22,17 @@ describe('Bookshelf Authorization', function () {
 
     it('overwrites Bookshelf.Model', function () {
       expect(Bookshelf.Model).to.have.property('authorize');
+    });
+
+  });
+
+  describe('Registry', function () {
+
+    it('appends the registry methods to the resolver if loaded', function () {
+      Bookshelf.plugin(registry);
+      Bookshelf.plugin(bookshelfAuthorization);
+      expect(resolver).to.itself.respondTo('model');
+      expect(resolver).to.itself.respondTo('collection');
     });
 
   });
