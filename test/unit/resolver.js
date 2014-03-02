@@ -1,6 +1,7 @@
 'use strict';
 
 var expect    = require('chai').expect;
+var sinon     = require('sinon');
 var ModelBase = require('../mocks/model');
 var UserBase  = require('../mocks/user');
 var resolver  = require('../../lib/resolver');
@@ -28,6 +29,13 @@ describe('Rule Resolver', function () {
       expect(resolver.authorization(new Model())).to.equal(Model.authorization);
     });
 
+    it('uses the registry to resolve authorization', function () {
+      resolver.model('Model', Model);
+      sinon.spy(resolver, 'model');
+      expect(resolver.authorization('Model')).to.equal(Model.authorization);
+      expect(resolver.model).to.have.been.called;
+    });
+
     it('returns the authorization on a ctor', function () {
       expect(resolver.authorization(Model)).to.equal(Model.authorization);
     });
@@ -42,6 +50,11 @@ describe('Rule Resolver', function () {
 
     it('returns the constructor for an instance', function () {
       expect(resolver.userCtor(new UserBase())).to.equal(UserBase);
+    });
+
+    it('uses the registry to resolve a user', function () {
+      resolver.model('User', UserBase);
+      expect(resolver.userCtor('User')).to.equal(UserBase);
     });
 
     it('returns the input if it is a constructor', function () {
