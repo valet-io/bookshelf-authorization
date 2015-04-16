@@ -281,4 +281,31 @@ describe('Integration: Can API', function () {
 
   });
 
+  describe('Anyone', function() {
+    var doctor;
+    var drHouse, drJeckyl, patient;
+    beforeEach(function () {
+      drJeckyl = new Doctor();
+      drHouse = new Doctor();
+      patient = new Patient();
+      Patient.authorize.anyone.to.read.when(function (genericUser) {
+        return this.appointments.filter(function (appointment) {
+          return appointment.doctor === genericUser;
+        });
+      });
+      patient.appointments = [{doctor: drHouse}];
+    });
+
+    it('allows anyone with proper permissions to read', function() {
+      return expect(drHouse.can.read(patient))
+        .to.eventually.equal(null);
+    });
+
+    it('rejects anyone without proper permissions', function() {
+      return expect(drJeckyl.can.read(patient))
+        .to.be.rejectedWith(AuthorizationError);
+    });
+
+  });
+
 });
